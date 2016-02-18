@@ -19,11 +19,31 @@
     </section>
 
     <section class="main-content">
-      <h3>
-<a id="service-workers-short-demo" class="anchor" href="#service-workers-short-demo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Service Workers Short Demo</h3>
+      <h2>
+<a id="setting-up-to-play-with-service-workers" class="anchor" href="#setting-up-to-play-with-service-workers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setting up to play with Service Workers</h2>
 
-<h3>
-<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Support or Contact</h3>
+<p>Many service workers features are now enabled by default in newer versions of supporting browsers. If however you find that demo code is not working in your installed versions, you might need to enable a pref:</p>
+
+<ul>
+<li>Firefox Nightly: Go to about:config and set dom.serviceWorkers.enabled to true; restart browser.</li>
+<li>Chrome Canary: Go to chrome://flags and turn on experimental-web-platform-features; restart browser (note that some features are now enabled by default in Chrome.)</li>
+<li>Opera: Go to opera://flags and enable Support for ServiceWorker; restart browser.
+You’ll also need to serve your code via HTTPS — Service Workers are restricted to running across HTTPS for security reasons. GitHub is therefore a good place to host experiments, as it supports HTTPS.</li>
+</ul>
+
+<h2>
+<a id="basic-architecture" class="anchor" href="#basic-architecture" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Basic architecture</h2>
+
+<p>With service workers, the following steps are generally observed for basic set up:</p>
+
+<p>The service worker URL is fetched and registered via serviceWorkerContainer.register().
+If successful, the service worker is executed in a ServiceWorkerGlobalScope; this is basically a special kind of worker context, running off the main script execution thread, with no DOM access.
+The service worker is now ready to process events.
+Installation of the worker is attempted when service worker-controlled pages are accessed subsequently. An Install event is always the first one sent to a service worker (this can be used to start the process of populating an IndexedDB, and caching site assets). This is really the same kind of procedure as installing a native or Firefox OS app — making everything available for use offline.
+When the oninstall handler completes, the service worker is considered installed.
+Next is activation. When the service worker is installed, it then receives an activate event. The primary use of onactivate is for cleanup of resources used in previous versions of a Service Worker script.
+The Service Worker will now control pages, but only those opened after the register() is successful. i.e. a document starts life with or without a Service Worker and maintains that for its lifetime. So documents will have to be reloaded to actually be controlled.
+<img src="https://mdn.mozillademos.org/files/8241/flowchart-production-version.png" alt="Architecture"></p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/boban-radeski/serviceworkers">Service Workers</a> is maintained by <a href="https://github.com/boban-radeski">boban-radeski</a>.</span>
