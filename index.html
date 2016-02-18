@@ -20,12 +20,29 @@
 
     <section class="main-content">
       <h2>
+<a id="what-is-a-service-worker" class="anchor" href="#what-is-a-service-worker" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What is a Service Worker?</h2>
+
+<p>A service worker is a script that is run by your browser in the background, separate from a web page, opening the door to features which don't need a web page or user interaction. Today, they already include features like push notifications and in the future it will include other things like, background sync, or geofencing. The core feature discussed in this tutorial is the ability to intercept and handle network requests, including programmatically managing a cache of responses.</p>
+
+<p>The reason this is such an exciting API is that it allows you to support offline experiences, giving developers complete control over what exactly that experience is.</p>
+
+<p>Before service worker there was one other API that would give users an offline experience on the web called App Cache. The major issue with App Cache is the number of gotcha's that exist as well as the design working particularly well for single page web apps, but not for multi-page sites. Service workers have been designed to avoid these common pain points.</p>
+
+<p>Things to note about a service worker:</p>
+
+<ul>
+<li>It's a JavaScript Worker, so it can't access the DOM directly. Instead, a service worker can communicate with the pages it controls by responding to messages sent via the postMessage interface, and those pages can manipulate the DOM if needed.</li>
+<li>Service worker is a programmable network proxy, allowing you to control how network requests from your page are handled.</li>
+<li>It will be terminated when not in use, and restarted when it's next needed, so you cannot rely on global state within a service worker's onfetch and onmessage handlers. If there is information that you need to persist and reuse across restarts, service workers do have access to the IndexedDB API.</li>
+<li>
+<p>Service workers make extensive use of promises, so if you're new to promises, then you should stop reading this and check out Jake Archibald's article.</p>
+
+<h2>
 <a id="setting-up-to-play-with-service-workers" class="anchor" href="#setting-up-to-play-with-service-workers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setting up to play with Service Workers</h2>
 
 <p>Many service workers features are now enabled by default in newer versions of supporting browsers. If however you find that demo code is not working in your installed versions, you might need to enable a pref:</p>
-
-<ul>
-<li>Firefox Nightly: Go to about:config and set dom.serviceWorkers.enabled to true; restart browser.</li>
+</li>
+<li><p>Firefox Nightly: Go to about:config and set dom.serviceWorkers.enabled to true; restart browser.</p></li>
 <li>Chrome Canary: Go to chrome://flags and turn on experimental-web-platform-features; restart browser (note that some features are now enabled by default in Chrome.)</li>
 <li>Opera: Go to opera://flags and enable Support for ServiceWorker; restart browser.
 You’ll also need to serve your code via HTTPS — Service Workers are restricted to running across HTTPS for security reasons. GitHub is therefore a good place to host experiments, as it supports HTTPS.</li>
